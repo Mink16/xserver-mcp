@@ -8,10 +8,6 @@
 
 ## [Unreleased]
 
-### Changed
-
-- **BREAKING**: サポート対象 Node.js を 20 以上 → **24 以上** (Active LTS) に引き上げ。Node 20 は 2026-04-30 に EOL、Node 22 も Maintenance に移行のため、Active LTS のみを対象にする。CI matrix も `[24, 25]` に更新。
-
 ## [0.1.0] - 2026-04-18
 
 ### Added
@@ -27,6 +23,10 @@
 - 同時接続セマフォ (既定 3)
 - 破壊的操作ガード (`delete_*` ツールは `confirm: z.literal(true)` 必須)
 - `ENABLE_TOOLSETS` による toolset 個別有効化
+
+### Requirements
+
+- **Node.js 24 以上** (Active LTS)。Node 20/22 はサポート対象外。
 
 [Unreleased]: https://github.com/Mink16/xserver-mcp/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.0
