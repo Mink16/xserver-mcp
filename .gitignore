@@ -1,0 +1,15 @@
+node_modules/
+build/
+coverage/
+.env
+.env.local
+*.log
+.DS_Store
+
+# XServer 公式 API 仕様 (© XServer Inc.)。再配布許諾が明示されていないため
+# リポジトリには含めず、開発者が各自公式サイトから取得して配置する。
+docs/xserver-openapi.json
+
+# Claude Code エージェントが自身の学習用に書き出す作業メモ。
+# 個人の作業コンテキストなので共有しない。
+.claude/agent-memory/

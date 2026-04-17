@@ -1,0 +1,64 @@
+{
+  "name": "xserver-mcp-server",
+  "version": "0.1.0",
+  "description": "Unofficial MCP server for the Xserver server-panel REST API (mail accounts, DNS records, server info, domain verification). Not affiliated with or endorsed by XServer Inc.",
+  "type": "module",
+  "bin": {
+    "xserver-mcp-server": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc && node -e \"import('node:fs').then(({chmodSync}) => chmodSync('build/index.js', 0o755))\"",
+    "start": "node build/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mink16/xserver-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mink16/xserver-mcp/issues"
+  },
+  "homepage": "https://github.com/Mink16/xserver-mcp#readme",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "xserver",
+    "xserver-api",
+    "dns",
+    "mail",
+    "server-panel"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "dotenv": "^16.4.0",
+    "env-var": "^7.5.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.4",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "eslint": "9.39.4",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.8.3",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0",
+    "typescript-eslint": "8.58.2",
+    "vitest": "^2.0.0"
+  }
+}

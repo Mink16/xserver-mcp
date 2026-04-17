@@ -1,0 +1,42 @@
+name: Feature request
+description: 新ツール追加・改善提案
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提案ありがとうございます。XServer 公式 API の範囲内である提案を歓迎します。
+  - type: textarea
+    id: problem
+    attributes:
+      label: 解決したい問題 / ユースケース
+      description: なぜこの機能が必要か、どんな状況で困っているか
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 提案内容
+      description: 新ツール名・入出力スキーマ案・対応する公式 API エンドポイントなど
+    validations:
+      required: true
+  - type: input
+    id: api-endpoint
+    attributes:
+      label: 対応する XServer API エンドポイント (あれば)
+      description: "例: `POST /v1/server/{servername}/ftp`"
+      placeholder: "https://developer.xserver.ne.jp/api/server/#..."
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 代替案 / 既に試したこと
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 確認事項
+      options:
+        - label: 既存 Issue を検索し、同一の提案がないことを確認した
+          required: true
+        - label: この機能は XServer 公式 API でサポートされている (または公式追加の予定がある) ことを確認した
+          required: false
