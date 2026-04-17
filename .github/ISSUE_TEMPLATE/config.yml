@@ -5,4 +5,4 @@ contact_links:
     about: 脆弱性は公開 Issue ではなく GitHub Security Advisories から非公開報告してください
   - name: 質問 / 使い方の相談
     url: https://github.com/Mink16/xserver-mcp/discussions
-    about: バグ・機能要望以外の質問は Discussions へ (有効化されている場合)
+    about: バグ・機能要望以外の質問は Discussions へ

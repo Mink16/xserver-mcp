@@ -5,7 +5,47 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Node](https://img.shields.io/node/v/xserver-mcp-server)](./package.json)
 
-> **English summary**: Unofficial Model Context Protocol (MCP) server that exposes the [Xserver server-panel REST API](https://developer.xserver.ne.jp/api/server/) (mail accounts, DNS records, server info, high-level domain verification) as MCP tools. Stdio transport only. Node.js 24+. Not affiliated with or endorsed by XServer Inc. Japanese documentation below.
+> **English summary**: Unofficial [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server that exposes the [Xserver server-panel REST API](https://developer.xserver.ne.jp/api/server/) as MCP tools. Stdio transport only. Node.js 24+. Not affiliated with or endorsed by XServer Inc.
+>
+> <details><summary><strong>English quick start & features</strong></summary>
+>
+> **Features**
+>
+> - Mail account CRUD (`list` / `create` / `get` / `update` / `delete`) + forwarding
+> - DNS record CRUD with `confirm: true` safeguard on destructive ops
+> - Server info & usage
+> - High-level composite tool `create_mail_account_with_verification` that auto-handles `_xserver-verify.{domain}` TXT ownership check
+> - Automatic IDN → Punycode normalization (Japanese domains / email addresses accepted as-is; resolved ASCII form is echoed back in write responses)
+> - Rate-limit aware HTTP client: 429 `Retry-After` auto-retry, concurrency semaphore, official error code (`VALIDATION_ERROR`, `OPERATION_ERROR`, `RATE_LIMIT_EXCEEDED`, ...) mapping
+> - Per-toolset enable/disable via `ENABLE_TOOLSETS` env var
+>
+> **Quick start**
+>
+> ```bash
+> git clone https://github.com/Mink16/xserver-mcp.git
+> cd xserver-mcp
+> npm ci && npm run build
+> cp .env.example .env   # fill in XSERVER_API_KEY and XSERVER_SERVERNAME
+> ```
+>
+> Then register it in your MCP client (Claude Desktop, Claude Code, etc.):
+>
+> ```json
+> {
+>   "mcpServers": {
+>     "xserver": {
+>       "command": "node",
+>       "args": ["/absolute/path/to/xserver-mcp/build/index.js"]
+>     }
+>   }
+> }
+> ```
+>
+> **Security**: your `XSERVER_API_KEY` stays in `.env` (gitignored) and is only sent to `https://api.xserver.ne.jp` as a Bearer token. The server never collects, relays, or logs it. See [SECURITY.md](./SECURITY.md).
+>
+> Japanese documentation follows below.
+>
+> </details>
 
 Xserver 公式の [サーバーパネル REST API](https://developer.xserver.ne.jp/api/server/) (`https://api.xserver.ne.jp`) を MCP ツールとして公開する Node.js サーバー。
 
