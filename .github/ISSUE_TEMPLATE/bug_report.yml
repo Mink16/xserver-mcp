@@ -1,0 +1,77 @@
+name: Bug report
+description: 再現手順つきのバグ報告
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        バグ報告ありがとうございます。**セキュリティに関する脆弱性は [SECURITY.md](../SECURITY.md) の手順で非公開報告してください** (このフォームは使わないでください)。
+  - type: input
+    id: version
+    attributes:
+      label: バージョン / commit SHA
+      description: "例: v0.1.0、または `git rev-parse HEAD` の先頭 7 桁"
+      placeholder: "v0.1.0 / 1234abc"
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js バージョン
+      description: "`node --version` の出力"
+      placeholder: "v22.11.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: OS
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - WSL
+        - Docker
+        - その他
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 何が起きたか
+      description: 実際の挙動を記述してください
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待する挙動
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 再現手順
+      description: MCP クライアント名 (Claude Code / Claude Desktop / 独自) とツール呼び出し引数を含めてください。**API キーや実サーバー名はマスクしてください**。
+      placeholder: |
+        1. `claude_desktop_config.json` に xserver-mcp を登録
+        2. `create_mail_account` を `{ "mail_address": "test@example.com", ... }` で呼び出し
+        3. 返却値 ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: ログ / エラー出力
+      description: "MCP クライアントの stderr や `{ error, code, detail }` の返却内容。**`XSERVER_API_KEY` と実サーバー名はマスク**してください。"
+      render: text
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 確認事項
+      options:
+        - label: 既存 Issue を検索し、同一の報告がないことを確認した
+          required: true
+        - label: ログ / 再現手順から API キー・実サーバー名などの機密情報を除去した
+          required: true

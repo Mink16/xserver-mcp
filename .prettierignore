@@ -1,0 +1,7 @@
+build/
+coverage/
+node_modules/
+package-lock.json
+docs/xserver-openapi.json
+.claude/agent-memory/
+.serena/

@@ -1,0 +1,3 @@
+# CODEOWNERS — https://docs.github.com/en/repositories/managing-your-repositories-settings-and-security/customizing-your-repository/about-code-owners
+# 全てのファイルの既定オーナー。PR 作成時に自動でレビュワーアサインされる。
+* @Mink16
