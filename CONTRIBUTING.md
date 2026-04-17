@@ -4,7 +4,7 @@
 
 ## 必要な環境
 
-- Node.js 20 以上 (`package.json` の `engines` 準拠)
+- Node.js 24 以上 (`package.json` の `engines` 準拠)
 - npm
 - Xserver サーバーパネルの API キー (ローカルで実 API を叩く場合のみ。ユニットテストは不要)
 

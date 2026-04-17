@@ -20,7 +20,7 @@ body:
     attributes:
       label: Node.js バージョン
       description: "`node --version` の出力"
-      placeholder: "v22.11.0"
+      placeholder: "v24.8.0"
     validations:
       required: true
   - type: dropdown

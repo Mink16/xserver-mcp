@@ -8,6 +8,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- **BREAKING**: サポート対象 Node.js を 20 以上 → **24 以上** (Active LTS) に引き上げ。Node 20 は 2026-04-30 に EOL、Node 22 も Maintenance に移行のため、Active LTS のみを対象にする。CI matrix も `[24, 25]` に更新。
+
 ## [0.1.0] - 2026-04-18
 
 ### Added

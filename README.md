@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Node](https://img.shields.io/node/v/xserver-mcp-server)](./package.json)
 
-> **English summary**: Unofficial Model Context Protocol (MCP) server that exposes the [Xserver server-panel REST API](https://developer.xserver.ne.jp/api/server/) (mail accounts, DNS records, server info, high-level domain verification) as MCP tools. Stdio transport only. Node.js 20+. Not affiliated with or endorsed by XServer Inc. Japanese documentation below.
+> **English summary**: Unofficial Model Context Protocol (MCP) server that exposes the [Xserver server-panel REST API](https://developer.xserver.ne.jp/api/server/) (mail accounts, DNS records, server info, high-level domain verification) as MCP tools. Stdio transport only. Node.js 24+. Not affiliated with or endorsed by XServer Inc. Japanese documentation below.
 
 Xserver 公式の [サーバーパネル REST API](https://developer.xserver.ne.jp/api/server/) (`https://api.xserver.ne.jp`) を MCP ツールとして公開する Node.js サーバー。
 
@@ -94,7 +94,7 @@ Xserver 公式の [サーバーパネル REST API](https://developer.xserver.ne.
 
 ## 前提条件
 
-- Node.js **20 以上** (`package.json` の `engines` 準拠)
+- Node.js **24 以上** (`package.json` の `engines` 準拠)
 - Xserver サーバーパネルで発行した **API キー**
   - 発行手順: [Xserver マニュアル「APIキー」](https://www.xserver.ne.jp/manual/man_tool_api.php) (同内容: [サポートサイト版](https://support.xserver.ne.jp/manual/man_tool_api.php))
 
