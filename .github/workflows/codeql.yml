@@ -20,6 +20,9 @@ concurrency:
 jobs:
   analyze:
     name: analyze (${{ matrix.language }})
+    # Code scanning は private repo では GitHub Advanced Security が必要 (有料)。
+    # public 化された瞬間に自動で有効化される。それまでは job を skip する。
+    if: ${{ github.event.repository.visibility != 'private' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
