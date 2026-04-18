@@ -13,3 +13,7 @@ docs/xserver-openapi.json
 # Claude Code エージェントが自身の学習用に書き出す作業メモ。
 # 個人の作業コンテキストなので共有しない。
 .claude/agent-memory/
+
+# release-hint.sh hook (Phase 2) の session 単位 flag file 保管場所。
+# 個人セッション状態で共有価値がないためコミット対象外。
+.claude/.hints/
