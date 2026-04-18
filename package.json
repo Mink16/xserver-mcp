@@ -1,6 +1,6 @@
 {
   "name": "xserver-mcp-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Unofficial MCP server for the Xserver server-panel REST API (mail accounts, DNS records, server info, domain verification). Not affiliated with or endorsed by XServer Inc.",
   "type": "module",
   "bin": {

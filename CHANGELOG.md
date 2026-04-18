@@ -8,6 +8,18 @@
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-04-18
+
+### Added
+
+- npm registry 公開: `npm install xserver-mcp-server` / `npx xserver-mcp-server` で導入可能になった。
+- `.github/workflows/release.yml`: GitHub Release 公開 / workflow_dispatch で OIDC provenance publish を自動化。NPM_TOKEN 不要。
+- README / README.en.md に npm 経由の導入手順と npm version badge を追加。
+
+### Changed
+
+- CodeQL workflow に `workflow_dispatch` trigger を追加 (手動起動 / タグからの検証用)。
+
 ## [0.1.0] - 2026-04-18
 
 ### Added
@@ -28,5 +40,6 @@
 
 - **Node.js 24 以上** (Active LTS)。Node 20/22 はサポート対象外。
 
-[Unreleased]: https://github.com/Mink16/xserver-mcp/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Mink16/xserver-mcp/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.1
 [0.1.0]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.0
