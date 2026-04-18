@@ -4,6 +4,7 @@
 
 [![CI](https://github.com/Mink16/xserver-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Mink16/xserver-mcp/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/Mink16/xserver-mcp/actions/workflows/codeql.yml/badge.svg)](https://github.com/Mink16/xserver-mcp/actions/workflows/codeql.yml)
+[![npm version](https://img.shields.io/npm/v/xserver-mcp-server.svg)](https://www.npmjs.com/package/xserver-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Node](https://img.shields.io/node/v/xserver-mcp-server)](./package.json)
 
@@ -108,15 +109,32 @@ On failure every tool returns the following normalized shape (with MCP's `isErro
 - An **API key** issued in the Xserver server panel
   - How to issue: [Xserver manual "API key"](https://www.xserver.ne.jp/manual/man_tool_api.php) (mirror: [support site version](https://support.xserver.ne.jp/manual/man_tool_api.php)) — both are in Japanese
 
-## Setup
+## Install
+
+### From npm (recommended)
+
+Published as [`xserver-mcp-server`](https://www.npmjs.com/package/xserver-mcp-server) on npm. Most users don't need to clone the source — your MCP client can launch it directly via `npx` (see [Use with Claude Code / Claude Desktop](#use-with-claude-code--claude-desktop)).
+
+You can also install globally to run it as a CLI:
 
 ```bash
+npm install -g xserver-mcp-server
+XSERVER_API_KEY=xxx XSERVER_SERVERNAME=sv12345.xserver.jp xserver-mcp-server
+```
+
+### From source (for development / debugging)
+
+```bash
+git clone https://github.com/Mink16/xserver-mcp.git
+cd xserver-mcp
 cp .env.example .env
 # Fill in XSERVER_API_KEY and XSERVER_SERVERNAME with real values
 
-npm install
+npm ci
 npm run build
 ```
+
+Note: `.env` is not auto-loaded when launched via `npx` or a global install (it is CWD-dependent). When started from an MCP client, pass the values via the `env` field of the client config (see below).
 
 ### Environment variables
 
@@ -132,7 +150,30 @@ npm run build
 
 ## Use with Claude Code / Claude Desktop
 
+### From npm (recommended)
+
 Add the following to your `.mcp.json` or `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "xserver": {
+      "command": "npx",
+      "args": ["-y", "xserver-mcp-server"],
+      "env": {
+        "XSERVER_API_KEY": "your-api-key",
+        "XSERVER_SERVERNAME": "sv12345.xserver.jp"
+      }
+    }
+  }
+}
+```
+
+All other env vars (`XSERVER_HTTP_CONCURRENCY`, etc.) are optional and fall back to their defaults.
+
+### From a local source build
+
+If you cloned the repo (e.g. for development):
 
 ```json
 {
@@ -145,7 +186,9 @@ Add the following to your `.mcp.json` or `claude_desktop_config.json`:
 }
 ```
 
-To spawn it from another MCP server as a child process, use the same `node <path>/build/index.js` invocation. Relative paths are resolved against the caller's CWD.
+With this form, `.env` is auto-loaded from the CWD, so you can skip the `env` field — but MCP clients differ in how they set CWD, so explicitly listing values in `env` is the safer choice.
+
+To spawn it from another MCP server as a child process, use either `npx -y xserver-mcp-server` or `node <path>/build/index.js`. Relative paths are resolved against the caller's CWD.
 
 ## Development
 

@@ -4,6 +4,7 @@
 
 [![CI](https://github.com/Mink16/xserver-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Mink16/xserver-mcp/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/Mink16/xserver-mcp/actions/workflows/codeql.yml/badge.svg)](https://github.com/Mink16/xserver-mcp/actions/workflows/codeql.yml)
+[![npm version](https://img.shields.io/npm/v/xserver-mcp-server.svg)](https://www.npmjs.com/package/xserver-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Node](https://img.shields.io/node/v/xserver-mcp-server)](./package.json)
 
@@ -98,15 +99,32 @@ Xserver 公式の [サーバーパネル REST API](https://developer.xserver.ne.
 - Xserver サーバーパネルで発行した **API キー**
   - 発行手順: [Xserver マニュアル「APIキー」](https://www.xserver.ne.jp/manual/man_tool_api.php) (同内容: [サポートサイト版](https://support.xserver.ne.jp/manual/man_tool_api.php))
 
-## セットアップ
+## インストール
+
+### npm 経由 (推奨)
+
+[npm パッケージ](https://www.npmjs.com/package/xserver-mcp-server) として公開されています。ほとんどのユーザーはソースをクローンする必要はなく、MCP クライアントの設定で `npx` から起動できます ([Claude Code / Claude Desktop での使用](#claude-code--claude-desktop-での使用) 参照)。
+
+グローバルインストールして CLI として試すこともできます:
 
 ```bash
+npm install -g xserver-mcp-server
+XSERVER_API_KEY=xxx XSERVER_SERVERNAME=sv12345.xserver.jp xserver-mcp-server
+```
+
+### ソースから (開発・デバッグ)
+
+```bash
+git clone https://github.com/Mink16/xserver-mcp.git
+cd xserver-mcp
 cp .env.example .env
 # .env の XSERVER_API_KEY と XSERVER_SERVERNAME を実値に書き換える
 
-npm install
+npm ci
 npm run build
 ```
+
+`.env` は `npx` や `npm install -g` 経由で起動した場合は読み込まれない (CWD 依存のため)。MCP クライアントから起動するときは後述のとおり `env` フィールドで渡す。
 
 ### 環境変数
 
@@ -122,7 +140,30 @@ npm run build
 
 ## Claude Code / Claude Desktop での使用
 
+### npm 経由 (推奨)
+
 プロジェクト側の `.mcp.json` もしくは `claude_desktop_config.json` に以下を追記:
+
+```json
+{
+  "mcpServers": {
+    "xserver": {
+      "command": "npx",
+      "args": ["-y", "xserver-mcp-server"],
+      "env": {
+        "XSERVER_API_KEY": "your-api-key",
+        "XSERVER_SERVERNAME": "sv12345.xserver.jp"
+      }
+    }
+  }
+}
+```
+
+`env` で指定していない他の環境変数 (`XSERVER_HTTP_CONCURRENCY` など) はすべて任意で、省略時は既定値が使われる。
+
+### ソースビルドから
+
+ローカルでクローンしたもの (開発用) を呼ぶ場合:
 
 ```json
 {
@@ -134,6 +175,8 @@ npm run build
   }
 }
 ```
+
+この構成では `.env` が CWD 基準で読み込まれるため、`env` フィールドを書かなくてもよい (ただし MCP クライアントによって CWD の扱いが異なるので `env` で明示するのが安全)。
 
 別の MCP サーバーから子プロセスとして呼ぶ場合も同様に `node <path>/build/index.js` で起動する。相対パス指定時は呼び出し側の CWD を基準とする。
 
