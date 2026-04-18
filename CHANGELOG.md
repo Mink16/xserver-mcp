@@ -8,6 +8,16 @@
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-04-18
+
+### Changed
+
+- `.claude/hooks/` に Claude Code hooks を 8 本導入 (Phase 1: `guard-bash` / `guard-paths` / `format-changed` / `session-context`、Phase 2: `check-tdd-pair` / `check-registry` / `check-runapi` / `release-hint`)。`.claude/settings.json` の `SessionStart` / `PreToolUse` / `PostToolUse` / `UserPromptSubmit` に登録し、CLAUDE.md と `.claude/rules/` の不変条件 (破壊的操作遮断・保護ファイル保全・TDD 規律・registry 登録漏れ検知・`runApi` 経由の正規化徹底・リリース導線案内) を機械的に検査する。`.claude/` 配下のみのため npm package (`xserver-mcp-server`) への影響はなく、セッション内の運用自動化にとどまる。
+
+### Documentation
+
+- `release` skill を `.claude/skills/release/SKILL.md` に新設し公式ベストプラクティスに沿って改訂。user approval gate を 3 箇所 (bump 承認 / commit diff 合意 / tag push 直前) に明示。`github-flow.md` と `[Unreleased]` セクションで PR マージ → リリース起点を接続する運用フローを整理。
+
 ## [0.1.1] - 2026-04-18
 
 ### Added
@@ -40,6 +50,7 @@
 
 - **Node.js 24 以上** (Active LTS)。Node 20/22 はサポート対象外。
 
-[Unreleased]: https://github.com/Mink16/xserver-mcp/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/Mink16/xserver-mcp/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.2
 [0.1.1]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.1
 [0.1.0]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.0
