@@ -29,6 +29,15 @@ ultrathink してから実行する。リリースは **push / tag / GitHub Rele
 - `CHANGELOG.md` が Keep a Changelog 形式 + 末尾に `[x.y.z]: <compare url>` の comparison link を持つ
 - `package.json` の `version` が CHANGELOG の直近タグと一致している
 
+## Upstream contract (github-flow 側の前提)
+
+この skill は **github-flow が正しく回っている前提**で起動する (詳細: `.claude/rules/github-flow.md#release-への接続`)。具体的には:
+
+- user-facing な変更を含む各 PR が merge 時に `CHANGELOG.md` の `## [Unreleased]` に 1 行追記している (PR チェックリスト項目)
+- 従って release 起動時には `[Unreleased]` を見れば「このバージョンで何が出るか」がほぼ確定している
+
+`[Unreleased]` が空 or 明らかに不足している場合は Step 2 で `git log` から補完するフォールバック経路があるが、これは**例外処理**であって通常経路ではない。毎回フォールバックが走るなら PR 側の運用が崩れているサインなので、release を進める前にユーザーに差し戻して upstream の習慣を直してもらう。
+
 ## Inputs (ユーザーから集める)
 
 1. **Version bump**: `$ARGUMENTS` で `patch` / `minor` / `major` / `v0.2.0` いずれか。未指定なら `git log <last-tag>..HEAD --oneline` を読んで conventional commits から提案する:
@@ -77,7 +86,7 @@ npm version <x.y.z> --no-git-tag-version
 
 ### 2. Update CHANGELOG.md
 
-Edit ツールで以下を反映:
+期待される通常経路は「`[Unreleased]` が PR 側で既に埋まっている → 新バージョンセクションに promote するだけ」。Edit ツールで以下を反映:
 
 1. `## [Unreleased]` の**下**に新セクションを挿入し ISO 日付を書く:
 
@@ -91,8 +100,8 @@ Edit ツールで以下を反映:
    - ...
    ```
 
-2. `[Unreleased]` 内容があれば新セクションへ移動
-3. 空なら `git log v<OLD>..HEAD --oneline` を次で分類:
+2. **通常経路**: `[Unreleased]` 内容を新セクションへそっくり移動し、`## [Unreleased]` 本体は空にする。表記揺れや順序だけ整形する (`Added` → `Changed` → `Fixed` → `Documentation` の順を推奨)。
+3. **フォールバック経路** (`[Unreleased]` が空/不足): `git log v<OLD>..HEAD --oneline` を次で分類。毎回これが必要なら PR 側の運用 (`.claude/rules/pull-requests.md` のチェックリスト) が守られていないサインなのでユーザーに報告:
    - `feat(…)` → **Added**
    - `fix(…)` → **Fixed**
    - `refactor(…)` / `chore(deps)` → **Changed**

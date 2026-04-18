@@ -44,6 +44,21 @@ git branch -d feat/xxx        # ローカル削除
 git push origin --delete feat/xxx  # リモート削除 (GitHub 側で自動削除設定なら不要)
 ```
 
+## Release への接続
+
+github-flow の責務は「PR を main にマージするまで」で、npm registry に新バージョンを出すのは別フェーズ。2 つは `CHANGELOG.md` の `[Unreleased]` セクションで橋渡しする。
+
+```
+feature branch → PR → merge main → [Unreleased] 蓄積 → release skill → npm publish
+   ↑ github-flow.md        ↑ pull-requests.md          ↑ .claude/skills/release/
+```
+
+- **PR 側の責任**: user-facing な変更 (新ツール / 入出力変更 / バグ修正 / 破壊的変更) を含む PR は、マージ前に `CHANGELOG.md` の `## [Unreleased]` に 1 行追記する (`pull-requests.md` のチェックリスト参照)。これによりリリース時の「何がマージされたんだっけ」調査が不要になり、`release` skill の Step 2 (CHANGELOG 整形) がほぼ無作業になる。
+- **Release 側の責任**: `[Unreleased]` が溜まったら `.claude/skills/release/SKILL.md` を起動して npm publish まで一気通貫する。release skill は `[Unreleased]` セクションを新バージョンに promote するだけで、個別変更を調査しない前提。
+- **Release は自動ではない**: PR マージごとに勝手にリリースは走らない。依存更新をまとめて出したい / 機能が揃ったタイミング / hotfix を出したい、といった**明示的な意思決定**で release skill を呼ぶ。
+
+hotfix も同じ経路を通る (hotfix ブランチ → PR → main → release skill で次の patch を即切る)。github-flow と release skill を分離する・develop ブランチを持たない設計はこのためで、ship-ready main を常に維持することでリリースの起点をいつでも選べる。
+
 ## マージ戦略
 
 - **通常の PR**: Merge commit (`--no-ff`) を推奨。TDD の RED/GREEN/REFACTOR の履歴を残し、PR 単位が `git log --merges` で追える。
