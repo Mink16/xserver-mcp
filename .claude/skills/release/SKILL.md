@@ -47,6 +47,16 @@ description: xserver-mcp のリリースサイクル全体 (SemVer version bump 
 
 **diff をユーザーに見せて明示的に確認を取ってから commit する**。勝手にリリースを進めない。
 
+## User approval gates (3 箇所でのみユーザー承認を待つ)
+
+リリースは**自動化**が目的なので、毎ステップで質問するのは NG。代わりに「意味のある意思決定点」と「point of no return」の合計 **3 箇所**でだけ user approval を取る。それ以外の mechanical step はユーザーに確認せず粛々と進める。
+
+- 🛑 **Gate 1 — version 決定後 (Step 1 の直前)**: 「v<NEW> で進めます。よいですか?」と確認し、ユーザーの GO / CANCEL を待つ。根拠 (git log の conventional commits 分析) を 1-3 行で添える。
+- 🛑 **Gate 2 — CHANGELOG diff 完成後 (Step 4 の直前)**: CHANGELOG の diff (`git diff CHANGELOG.md`) をユーザーに見せて「この内容で commit します。よいですか?」と確認。表記・順序・抜けを直せる最後のチャンス。
+- 🛑 **Gate 3 — tag push 直前 (Step 6 の `git push origin v<NEW>` の直前)**: 「これ以降は tag push + GitHub Release 作成 → release.yml が npm publish を走らせる **irreversible な flow** です。よいですか?」と最終確認。ここで OK なら以降 Step 10 までは自動で完走させる (個別にユーザーを煩わせない)。
+
+Gate 3 以降で失敗が起きたら stop してユーザーに現状を報告し、recovery 手順 (`Troubleshooting` 参照) を選んでもらう。
+
 ## Preflight checks (1 つでも NG なら絶対に進めない)
 
 ```bash
@@ -68,6 +78,8 @@ npm view xserver-mcp-server@<TARGET_VERSION>                # 404 Not Found
 
 ### 1. Version bump
 
+🛑 **Gate 1 をここで通すこと** (前述)。OK なら実行:
+
 ```bash
 npm version <patch|minor|major> --no-git-tag-version
 ```
@@ -77,8 +89,10 @@ npm version <patch|minor|major> --no-git-tag-version
 明示版指定なら:
 
 ```bash
-npm version <x.y.z> --no-git-tag-version --allow-same-version=false
+npm version <x.y.z> --no-git-tag-version
 ```
+
+`npm version` は既定で「同じ version への指定」をエラーにするので、`preflight 5` をすり抜けた場合も二重の防御になる。
 
 ### 2. Update CHANGELOG.md
 
@@ -127,6 +141,8 @@ npm run format && \
 
 ### 4. Commit
 
+🛑 **Gate 2 をここで通すこと** (`git diff CHANGELOG.md package.json` を見せて承認待ち)。OK なら:
+
 ```bash
 git add package.json package-lock.json CHANGELOG.md
 git commit -m "$(cat <<'EOF'
@@ -159,10 +175,17 @@ remote: - 7 of 7 required status checks are expected.
 
 ```bash
 git tag -a v<NEW_VERSION> -m "v<NEW_VERSION>"
+```
+
+🛑 **Gate 3 をここで通すこと** (tag 作成後、push の直前)。「次の `git push` + `gh release create` で npm publish が走ります。**revert するには `next patch` を切る必要あり**。進めてよいですか?」と確認。OK なら:
+
+```bash
 git push origin v<NEW_VERSION>
 ```
 
 annotated tag (`-a`) を使う (lightweight tag は使わない)。Release にメタ情報を残すため。
+
+**Gate 3 以降は Step 10 まで自動で完走する** (ユーザーに都度確認しない)。失敗したら即座に stop して recovery 手順に移る。
 
 ### 7. Release notes を抽出
 
