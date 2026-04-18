@@ -8,6 +8,14 @@
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-04-18
+
+### Changed
+
+- `.claude/hooks/completion-gate.sh` を追加 (Phase 3)。`Stop` + `SubagentStop` (matcher `tdd-developer|implementer|test-writer`) で `src/` / `tests/` に変更がある状態の終了時に `npm run typecheck && npm test` を自動実行し、fail なら `decision: block` で agent に差し戻す。30 秒以内の再走はキャッシュ (`.claude/.hints/gate-last.stamp`) で skip、`stop_hook_active=true` で無限ループ防止、`XSERVER_MCP_SKIP_GATE=1` で bypass。`reviewer` / `reviewer-architect` は read-only のため matcher から除外。
+- `.claude/hooks/guard-main-branch.sh` を追加 (Phase 3)。`PreToolUse` (`Write` / `Edit` / `MultiEdit`) で main ブランチ直での `src/` / `tests/` 編集を deny し、`.claude/rules/github-flow.md` の「main への直接コミット禁止」を機械的に担保する。`XSERVER_MCP_ALLOW_MAIN_EDIT=1` で bypass。`package.json` / `tsconfig.json` / `CHANGELOG.md` / `docs/` / `.claude/` は対象外 (release skill の `chore(release)` 編集と docs typo 修正を阻害しないため)。
+- 本バージョンで Claude Code hooks の段階導入 (Phase 1 → 2 → 3) を完了。全 10 本の hook (`session-context` / `release-hint` / `guard-bash` / `guard-paths` / `guard-main-branch` / `format-changed` / `check-tdd-pair` / `check-registry` / `check-runapi` / `completion-gate`) が CLAUDE.md と `.claude/rules/` の不変条件を機械的に検査する。`.claude/` 配下のみのため npm package (`xserver-mcp-server`) への影響はなし。
+
 ## [0.1.2] - 2026-04-18
 
 ### Changed
@@ -50,7 +58,8 @@
 
 - **Node.js 24 以上** (Active LTS)。Node 20/22 はサポート対象外。
 
-[Unreleased]: https://github.com/Mink16/xserver-mcp/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/Mink16/xserver-mcp/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.3
 [0.1.2]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.2
 [0.1.1]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.1
 [0.1.0]: https://github.com/Mink16/xserver-mcp/releases/tag/v0.1.0
